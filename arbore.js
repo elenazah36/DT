@@ -5,21 +5,8 @@
 // R - right (introduce a "1"))
 // the node name should contain the name of previous visited nodes.
 // ex.: A0LR - Level 2, code: 01
-function createFreq(freq, sentence) {
-  for(var i = 0; i < sentence.length; i++) {
-    var item = sentence[i];
-    freq[item] = 0;
-  }
-  for(var i = 0; i < sentence.length; i++) {
-    var item = sentence[i];
-    if (sentence.includes(item)) {
-      freq[item] += 1;
-    } else {
-      freq[item] = 1;
-    }
-  }
-}
 
+// Print function
 function printNodes(node, val="", freq) {
   var newVal = val + node.huff;
   if(node.left) {
@@ -33,6 +20,26 @@ function printNodes(node, val="", freq) {
   }
 }
 
+// Create frequency vector using a dictionary
+function createFreq(freq, sentence) {
+  
+  for(var i = 0; i < sentence.length; i++) {
+    var item = sentence[i];
+    freq[item] = 0;
+  }
+  
+  for(var i = 0; i < sentence.length; i++) {
+    var item = sentence[i];
+    if (sentence.includes(item)) {
+      freq[item] += 1;
+    } else {
+      freq[item] = 1;
+    }
+  }
+}
+
+
+// Class Used
 class Node {
   constructor(freq, sym, left=null, right=null) {
     this.freq = freq;
@@ -42,15 +49,14 @@ class Node {
     this.huff = "";
   }
 }
-function pressButton() {
-  console.clear();
+// The whole algorithm will be called when pressing the button
+function press() {
+  console.clear(); // clear after inserting new text
   var input = document. getElementById("huffmanText").value;
   console.log(input);
   var sentence = new String(input).split('');
   var freq = {};
   createFreq(freq, sentence);
-
-  console.log(freq);
 
   let nodes = [];
   for(var item in freq) {
@@ -58,16 +64,8 @@ function pressButton() {
     nodes.push(node);
   }
 
-  console.log("Frequencies, not sorted: ");
-  for(var i = 0; i < nodes.length; i++) {
-    console.log(nodes[i].freq);
-  }
-
   let sortedNodes = (nodes.sort((a,b) => a.freq - b.freq));
-  console.log("Sorted: ");
-  for(var i = 0; i < sortedNodes.length; i++) {
-    console.log(sortedNodes[i].freq);
-  }
+  
 
   let newNodes = [];
   let left = new Node();
@@ -91,14 +89,38 @@ function pressButton() {
   var huffSymbols = freq;
   printNodes(newNodes[0]);
 }
+
+//Button actions
+document.getElementById("Btn").addEventListener("click",press);
 // binary tree "IT IS BETTER LATER THAN NEVER"
 var treeData =
   {
     "name": "A0 = 30",
     "children": [
-      { "name": "Level 1: 18",
+      {
+        "name": "Level 1: 18",
         "children": [
-          { "name": "Level 2: 8", },
+          { "name": "Level 2: 8",
+              "children": [
+                { "name": "Level 3: 4",
+                    "children": [
+                      { "name": "Level 4: 2",
+                          "children": [
+                            { "name": "Level 5: B" },
+                            { "name": "Level 5: ." }
+                          ]
+                      },
+                      { "name": "Level 4: N"}
+                    ]
+                },
+                { "name": "Level 3: 4",
+                    "children": [
+                      { "name": "Level 4: I"},
+                      { "name": "Level 4: A" }
+                    ]
+                }
+              ]
+          },
           { "name": "Level 2: 10",
               "children": [
                 { "name": "Level 3: T"},
@@ -107,7 +129,32 @@ var treeData =
           }
         ]
       },
-      { "name": "Level 1: 12"}
+      { "name": "Level 1: 12",
+        "children": [
+          { "name": "Level 2: 7",
+              "children": [
+                { "name": "Level 3: 4",
+                    "children": [
+                      { "name": "Level 4: 2",
+                          "children": [
+                            { "name": "Level 5: V" },
+                            { "name": "Level 5: S" }
+                          ]
+                      },
+                      { "name": "Level 4: 2",
+                          "children": [
+                            { "name": "Level 5: L" },
+                            { "name": "Level 5: H" }
+                          ]
+                      }
+                    ]
+                },
+                { "name": "Level 3: R" }
+              ]
+         },
+          { "name": "Level 2: spatiu" }
+        ]
+	  }
     ]
   };
 // Set the dimensions and margins of the diagram
@@ -293,5 +340,4 @@ function update(source) {
   }
 }
 
-//Button actions
-document.getElementById("huffmanBtn").addEventListener("click",pressButton);
+
